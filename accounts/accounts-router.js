@@ -31,6 +31,43 @@ router.get('/:id', (req, res) => {
         })
 });
 
+// Stretch - Limit number of Accounts
+
+router.get('/limit/:limit', (req, res) => {
+    db('accounts')
+        .limit(req.params.limit)
+        .then(accounts => {
+            if (accounts) {
+                res.status(200).json(accounts)
+            } else {
+                res.status(404).json({ message: 'No accounts found' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Error', err });
+        });
+});
+
+// Sorted Accounts
+router.get('/sortBy/:field/:order', (req, res) => {
+    db('accounts')
+        .orderBy(req.params.field, req.params.order)
+        .then(accounts => {
+            if (accounts) {
+                res.status(200).json(accounts)
+            } else {
+                res.status(404).json({ message: 'No accounts found' })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Error', err });
+        });
+})
+
+// Search Account Names
+// router.get('/') 
+
+
 router.post('/', (req, res) => {
     const accountData = req.body;
     db('accounts')
